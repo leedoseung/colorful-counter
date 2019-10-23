@@ -1,4 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
+import produce from 'immer';
 
 const INCREMENT = 'counter/INCREMENT';
 const DECREMENT = 'counter/DECREMENT';
@@ -17,17 +18,19 @@ const initialState = {
 
 
 export default handleActions({
-    [CHANGE_COLOR] : (state, action) => ({
-        ...state ,
-        color : action.payload
-    }),
-    [INCREMENT] : (state, action) => ({
-        ...state,
-        number : state.number + 1
-    }),
-    [DECREMENT] : (state, action) => ({
-        ...state ,
-        number : state.number - 1
-    })
+    [CHANGE_COLOR] : (state, action) => 
+        produce(state, draft => {
+            draft.color = action.payload
+        })
+    ,
+    [INCREMENT] : (state, action) => 
+        produce(state, draft => {
+            draft.number++;
+        })
+    ,
+    [DECREMENT] : (state, action) => 
+        produce(state, draft => {
+            draft.number--;
+        })
 }, initialState);
 
